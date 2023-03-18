@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
 	java
 	`maven-publish`
-
+	kotlin("plugin.serialization") version "1.8.0"
 	alias(libs.plugins.kotlin)
 	alias(libs.plugins.quilt.loom)
 }
@@ -52,7 +52,25 @@ dependencies {
 	modImplementation(libs.qfapi)
 	// modImplementation(libs.bundles.qfapi) // If you wish to use the deprecated Fabric API modules
 
-	modImplementation(libs.qkl)
+	//modImplementation(libs.qkl)
+	modImplementation("net.silkmc:silk-core:1.9.6")
+	modImplementation("net.silkmc:silk-commands:1.9.6")
+
+
+	include(implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")!!)
+	include(implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4")!!)
+
+	include(implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")!!)
+
+	include(implementation("io.ktor:ktor-client-core:2.2.3")!!)
+	include(implementation("io.ktor:ktor-client-cio:2.2.3")!!)
+	include(implementation("io.ktor:ktor-client-content-negotiation:2.2.3")!!)
+	include(implementation("io.ktor:ktor-client-websockets:2.2.3")!!)
+
+	include(implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.3")!!)
+	include(implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")!!)
+
+
 }
 
 tasks {
