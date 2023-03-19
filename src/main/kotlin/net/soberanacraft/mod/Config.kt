@@ -5,6 +5,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import net.soberanacraft.mod.api.models.Platform
+import java.io.File
 import kotlin.io.path.Path
 import kotlin.io.path.exists
 import kotlin.io.path.readText
@@ -38,11 +39,10 @@ data class Config(val api: ApiConfig, val server: ServerConfig) {
 }
 
 
-fun fromFile(path: String): Config {
-    val file = Path(path)
-    if (!file.exists()) {
-        val s = Json.encodeToString(Config.Default)
-        file.writeText(s)
+fun fromFile(path: File): Config {
+    if (!path.exists()) {
+        val s = Jsoberana.encodeToString(Config.Default)
+        path.writeText(s)
     }
-    return Json.decodeFromString(file.readText())
+    return Json.decodeFromString(path.readText())
 }

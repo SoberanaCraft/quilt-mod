@@ -2,8 +2,11 @@
 
 package net.soberanacraft.mod
 
+import kotlinx.serialization.json.Json
 import net.minecraft.text.*
 import net.minecraft.util.Formatting
+
+val Jsoberana = Json {prettyPrint = true }
 
 fun String.toComponent() : MutableText = Text.literal(this)
 fun String.toLinkComponent(uri: String) = Components.Styles.Link(uri, this)
