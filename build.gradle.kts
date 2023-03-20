@@ -24,6 +24,9 @@ repositories {
 	// for more information about repositories.
 }
 
+val share by configurations.creating
+val blacklist = listOf("org.slf4j", "org.jetbrains.kotlin", "org.jetbrains")
+
 // All the dependencies are declared at gradle/libs.version.toml and referenced with "libs.<id>"
 // See https://docs.gradle.org/current/userguide/platforms.html for information on how version catalogs work.
 dependencies {
@@ -57,20 +60,28 @@ dependencies {
 	modImplementation("net.silkmc:silk-commands:1.9.6")
 
 
-	include(implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")!!)
-	include(implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4")!!)
+	share(implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")!!)
+	share(implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4")!!)
 
-	include(implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")!!)
+	share(implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")!!)
 
-	include(implementation("io.ktor:ktor-client-core:2.2.3")!!)
-	include(implementation("io.ktor:ktor-client-cio:2.2.3")!!)
-	include(implementation("io.ktor:ktor-client-content-negotiation:2.2.3")!!)
-	include(implementation("io.ktor:ktor-client-websockets:2.2.3")!!)
+	share(implementation("io.ktor:ktor-client-core:2.2.3")!!)
+	share(implementation("io.ktor:ktor-client-cio:2.2.3")!!)
+	share(implementation("io.ktor:ktor-client-content-negotiation:2.2.3")!!)
+	share(implementation("io.ktor:ktor-client-websockets:2.2.3")!!)
 
-	include(implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.3")!!)
-	include(implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")!!)
+	share(implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.3")!!)
+	share(implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")!!)
+
+	getDepGraph().filter { !blacklist.any{that -> that == it.group} } .forEach {
+		val notation = it.getDependecyNotation()
+		include(notation)
+	}
+}
 
 
+fun getDepGraph(): List<ModuleVersionIdentifier> {
+	return share.resolvedConfiguration.resolvedArtifacts.map { it.moduleVersion.id }.distinct()
 }
 
 tasks {
@@ -157,3 +168,6 @@ publishing {
 		// retrieving dependencies.
 	}
 }
+
+fun ModuleVersionIdentifier.getDependecyNotation() : String =
+	"${this.group}:${this.name}:${this.version}"
