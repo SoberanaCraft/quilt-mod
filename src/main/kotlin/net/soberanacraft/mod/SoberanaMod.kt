@@ -18,6 +18,7 @@ object SoberanaMod : ModInitializer {
 
     val REFMAP: MutableMap<UUID, Connection> = mutableMapOf()
     val PLAYERS: MutableMap<UUID, Player> = mutableMapOf()
+    val AUTHENTICATED_PLAYERS: MutableSet<UUID> = mutableSetOf()
 
     lateinit var CFG : Config
 
