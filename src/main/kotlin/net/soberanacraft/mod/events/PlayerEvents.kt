@@ -40,6 +40,10 @@ object PlayerEvents {
 
         Events.Player.preQuit.listen { event ->
             silkCoroutineScope.mcSyncLaunch {
+                if (SoberanaMod.AUTHENTICATED_PLAYERS.contains(event.player.uuid)){
+                    SoberanaMod.AUTHENTICATED_PLAYERS -= event.player.uuid
+                }
+
                 event.player.disconnect()
             }
         }
