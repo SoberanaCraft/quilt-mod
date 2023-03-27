@@ -21,6 +21,7 @@ object Components {
         val COMMAND_GREEN = 0x4BF27B
         val LINK = 0x5865F2
         val INFO = 0xA72DDB
+        val AUTH = 0xD9902E
     }
     object Styles {
         val GRAY = Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.GRAY))
@@ -34,5 +35,7 @@ object Components {
         val ReadOnly =  Styles.Bracketed("Somente Leitura".toComponent().setStyle(Styles.fromRgb(Colors.READ_ONLY_RED)))
         val LinkCommand = Styles.Bracketed("Link".toComponent().setStyle(Styles.fromRgb(Colors.COMMAND_GREEN)))
         val InviteCommand = Styles.Bracketed("Invite".toComponent().setStyle(Styles.fromRgb(Colors.COMMAND_GREEN)))
+        val Registrar = Styles.Bracketed("Registrar".toComponent().setStyle(Styles.fromRgb(Colors.AUTH)))
+        val Login = Styles.Bracketed("Login".toComponent().setStyle(Styles.fromRgb(Colors.AUTH)))
     }
 }
