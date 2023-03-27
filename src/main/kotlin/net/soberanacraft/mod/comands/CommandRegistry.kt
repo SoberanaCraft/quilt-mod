@@ -4,5 +4,6 @@ object CommandRegistry {
     fun init () {
         InviteCommand.register()
         LinkCommand.register()
+        RegistrarCommand.register()
     }
 }
