@@ -62,5 +62,6 @@ object SoberanaApi {
         suspend fun register(owner: UUID, discordId: ULong?, password: String) = fallible<AuthenticatedUser> { _post<Any>("/player/register?owner=$owner&discordId=$discordId&password=$password", null) }
         suspend fun unregister(owner: UUID) = fallible<Boolean> { _delete("/player/unregister?owner=$owner") }
         suspend fun updatePassword(owner: UUID, old: String, new: String) = fallible<Boolean> { _post<Any>("/player/auth/update?owner=$owner&old=$old&new=$new", null) }
+        suspend fun isRegistered(owner: UUID) = fallible<Boolean> { _post<Any>("/player/auth/isRegistered?owner=$owner", null)  }
     }
 }
