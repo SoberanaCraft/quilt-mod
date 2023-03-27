@@ -5,5 +5,6 @@ object CommandRegistry {
         InviteCommand.register()
         LinkCommand.register()
         RegistrarCommand.register()
+        LoginCommand.register()
     }
 }
