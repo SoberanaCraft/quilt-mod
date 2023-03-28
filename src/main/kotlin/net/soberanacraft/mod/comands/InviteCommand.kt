@@ -3,10 +3,7 @@ package net.soberanacraft.mod.comands
 import net.minecraft.command.argument.GameProfileArgumentType.GameProfileArgument
 import net.silkmc.silk.commands.command
 import net.soberanacraft.mod.Components
-import net.soberanacraft.mod.api.Failure
-import net.soberanacraft.mod.api.SoberanaApi
-import net.soberanacraft.mod.api.Success
-import net.soberanacraft.mod.api.intoString
+import net.soberanacraft.mod.api.*
 import net.soberanacraft.mod.api.models.Trust
 import net.soberanacraft.mod.events.get
 import net.soberanacraft.mod.plus
@@ -14,6 +11,8 @@ import net.soberanacraft.mod.plus
 object InviteCommand {
     fun register() {
         command("invite") {
+            requires { it.permission("soberana.trusted.invite") }
+
             argument<GameProfileArgument>("player") { arg ->
                runsAsync {
                    val player = source.player

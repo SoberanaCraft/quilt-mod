@@ -11,6 +11,7 @@ import net.soberanacraft.mod.api.Success
 import net.soberanacraft.mod.api.models.LinkMessage
 import net.soberanacraft.mod.api.models.LinkStatus
 import net.soberanacraft.mod.api.models.Trust
+import net.soberanacraft.mod.api.permission
 import net.soberanacraft.mod.api.ws.waitUntil
 import net.soberanacraft.mod.events.applyEffects
 import net.soberanacraft.mod.events.get
@@ -18,6 +19,8 @@ import net.soberanacraft.mod.events.get
 object LinkCommand {
     fun register() {
         command("link") {
+            requires { it.permission("soberana.discord.link") }
+
             runsAsync {
                 val caller = source.player
                 if (caller == null) {

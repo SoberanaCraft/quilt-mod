@@ -1,8 +1,15 @@
 package net.soberanacraft.mod.events
 
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents
+import net.fabricmc.fabric.api.event.player.UseBlockCallback
+import net.fabricmc.fabric.api.event.player.UseItemCallback
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
+import net.minecraft.item.ItemStack
 import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.util.ActionResult
+import net.minecraft.util.TypedActionResult
 import net.minecraft.world.GameMode
 import net.silkmc.silk.core.annotations.DelicateSilkApi
 import net.silkmc.silk.core.annotations.ExperimentalSilkApi
@@ -19,6 +26,7 @@ import net.soberanacraft.mod.api.Success
 import net.soberanacraft.mod.api.models.*
 import net.soberanacraft.mod.plus
 import net.soberanacraft.mod.toComponent
+import java.util.*
 
 object PlayerEvents {
     @OptIn(ExperimentalSilkApi::class, DelicateSilkApi::class)
@@ -32,9 +40,46 @@ object PlayerEvents {
 
         Events.Player.preQuit.listen { event ->
             silkCoroutineScope.mcSyncLaunch {
+                if (SoberanaMod.AUTHENTICATED_PLAYERS.contains(event.player.uuid)){
+                    SoberanaMod.AUTHENTICATED_PLAYERS -= event.player.uuid
+                }
+
                 event.player.disconnect()
             }
         }
+
+        PlayerBlockBreakEvents.BEFORE.register(PlayerBlockBreakEvents.Before { _, player, _, _, _ ->
+            isAuthenticated(player!!.uuid) == ActionResult.PASS
+        })
+
+        UseBlockCallback.EVENT.register(UseBlockCallback { player, _,_,_ ->
+            isAuthenticated(player!!.uuid)
+        })
+
+        UseItemCallback.EVENT.register(UseItemCallback { player,_, _ ->
+            isAuthenticatedItemStack(player!!.uuid)
+        })
+
+        AttackEntityCallback.EVENT.register(AttackEntityCallback { player, _,_, _, _ ->
+            isAuthenticated(player!!.uuid)
+        })
+
+    }
+
+    private fun isAuthenticated(uuid: UUID): ActionResult {
+        if (SoberanaMod.AUTHENTICATED_PLAYERS.contains(uuid)) {
+            return ActionResult.PASS
+        }
+
+        return ActionResult.FAIL
+    }
+
+    private fun isAuthenticatedItemStack(uuid: UUID) : TypedActionResult<ItemStack> {
+        if (SoberanaMod.AUTHENTICATED_PLAYERS.contains(uuid)) {
+            return TypedActionResult.pass(ItemStack.EMPTY)
+        }
+
+        return TypedActionResult.fail(ItemStack.EMPTY)
     }
 
 

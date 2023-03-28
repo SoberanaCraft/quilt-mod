@@ -14,7 +14,8 @@ public class ItemPickupMixin {
 
 	@Inject(method = "onPlayerCollision", at = @At("HEAD"), cancellable = true)
 	public void onPlayerCollision(PlayerEntity player, CallbackInfo ci) {
-		if(SoberanaMod.INSTANCE.getPLAYERS().get(player.getUuid()).component7() == Trust.Unlinked) {
+		if(!SoberanaMod.INSTANCE.getAUTHENTICATED_PLAYERS().contains(player.getUuid())
+				|| SoberanaMod.INSTANCE.getPLAYERS().get(player.getUuid()).component7() == Trust.Unlinked) {
 			ci.cancel();
 		}
 	}

@@ -11,6 +11,7 @@ val Jsoberana = Json {prettyPrint = true }
 fun String.toComponent() : MutableText = Text.literal(this)
 fun String.toLinkComponent(uri: String) = Components.Styles.Link(uri, this)
 fun String.toInfoComponent() = Components.Styles.Info(this.toComponent().setStyle(Components.Styles.GRAY))
+fun String.toErrComponent() = Components.Styles.Error(this.toComponent())
 
 operator fun MutableText.plus(other: MutableText) : MutableText = this.copy().append(other)
 operator fun MutableText.plus(other: String) : MutableText = this.copy().append(other.toComponent())
@@ -21,6 +22,8 @@ object Components {
         val COMMAND_GREEN = 0x4BF27B
         val LINK = 0x5865F2
         val INFO = 0xA72DDB
+        val AUTH = 0xD9902E
+        var ERR = 0xFF0000
     }
     object Styles {
         val GRAY = Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.GRAY))
@@ -29,10 +32,15 @@ object Components {
         fun Link(uri: String, description: String) = description.toComponent().setStyle(Styles.fromRgb(Colors.LINK).withUnderline(true).withClickEvent(
             ClickEvent(ClickEvent.Action.OPEN_URL,uri)))
         fun Info (component: MutableText) = "Info: ".toComponent().setStyle(Styles.fromRgb(Colors.INFO).withItalic(true)) + component
+        fun Error(component: MutableText) = "Erro: ".toComponent().setStyle(Styles.fromRgb(Colors.ERR).withBold(true).withUnderline(true)) +
+            component.setStyle(Styles.fromRgb(Colors.ERR).withItalic(true).withUnderline(false).withBold(false))
     }
     object Heading {
         val ReadOnly =  Styles.Bracketed("Somente Leitura".toComponent().setStyle(Styles.fromRgb(Colors.READ_ONLY_RED)))
         val LinkCommand = Styles.Bracketed("Link".toComponent().setStyle(Styles.fromRgb(Colors.COMMAND_GREEN)))
         val InviteCommand = Styles.Bracketed("Invite".toComponent().setStyle(Styles.fromRgb(Colors.COMMAND_GREEN)))
+        val Registrar = Styles.Bracketed("Registrar".toComponent().setStyle(Styles.fromRgb(Colors.AUTH)))
+        val Login = Styles.Bracketed("Login".toComponent().setStyle(Styles.fromRgb(Colors.AUTH)))
+        val MudarSenha = Styles.Bracketed("Mudar Senha".toComponent().setStyle(Styles.fromRgb(Colors.AUTH)))
     }
 }

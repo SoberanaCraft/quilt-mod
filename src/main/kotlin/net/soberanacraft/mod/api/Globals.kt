@@ -9,6 +9,8 @@ import io.ktor.http.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
+import me.lucko.fabric.api.permissions.v0.Permissions
+import net.minecraft.server.command.ServerCommandSource
 import net.soberanacraft.mod.api.models.*
 import java.util.*
 
@@ -119,3 +121,6 @@ fun handleLinkMessage(message: LinkMessage): String {
         LinkStatus.AlreadyLinked -> "ALREADY_LINKED"
     }
 }
+
+fun ServerCommandSource.permission(s: String) : Boolean =
+    Permissions.check(this, s)
