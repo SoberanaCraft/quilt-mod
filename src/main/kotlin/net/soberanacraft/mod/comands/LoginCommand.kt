@@ -3,15 +3,14 @@ package net.soberanacraft.mod.comands
 import net.silkmc.silk.commands.command
 import net.soberanacraft.mod.Components
 import net.soberanacraft.mod.SoberanaMod
-import net.soberanacraft.mod.api.Failure
-import net.soberanacraft.mod.api.SoberanaApi
-import net.soberanacraft.mod.api.Success
-import net.soberanacraft.mod.api.intoString
+import net.soberanacraft.mod.api.*
 import net.soberanacraft.mod.plus
 
 object LoginCommand {
     fun register() {
         command("login") {
+            requires { it.permission("soberana.account.login") }
+
             argument<String>("senha") { arg ->
                 runsAsync {
                     val caller = source.player

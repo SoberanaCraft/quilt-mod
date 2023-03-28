@@ -2,14 +2,13 @@ package net.soberanacraft.mod.comands
 
 import net.silkmc.silk.commands.command
 import net.soberanacraft.mod.*
-import net.soberanacraft.mod.api.Failure
-import net.soberanacraft.mod.api.SoberanaApi
-import net.soberanacraft.mod.api.Success
-import net.soberanacraft.mod.api.intoString
+import net.soberanacraft.mod.api.*
 
 object MudarSenhaCommand {
     fun register() {
         command("mudarSenha") {
+            requires { it.permission("soberana.account.changepassword") }
+
             argument<String>("antiga") { old ->
                 argument<String>("nova") { new ->
                     runsAsync {
