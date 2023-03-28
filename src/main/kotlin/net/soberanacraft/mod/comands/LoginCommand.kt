@@ -16,6 +16,11 @@ object LoginCommand {
                 runsAsync {
                     val caller = source.player
 
+                    if (SoberanaMod.AUTHENTICATED_PLAYERS.contains(caller.uuid)) {
+                        caller.sendSystemMessage(Components.Heading.Login + " Você já está logado.")
+                        return@runsAsync
+                    }
+
                     var response = SoberanaApi.Auth.isRegistered(caller.uuid)
 
                     when (response) {
