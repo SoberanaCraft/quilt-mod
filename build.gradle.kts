@@ -22,6 +22,7 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
+	maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots/") }
 }
 
 val share by configurations.creating
@@ -58,6 +59,7 @@ dependencies {
 	//modImplementation(libs.qkl)
 	modImplementation("net.silkmc:silk-core:1.9.6")
 	modImplementation("net.silkmc:silk-commands:1.9.6")
+	share(modImplementation("me.lucko:fabric-permissions-api:0.2-SNAPSHOT")!!)
 
 
 	share(implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")!!)
