@@ -6,5 +6,6 @@ object CommandRegistry {
         LinkCommand.register()
         RegistrarCommand.register()
         LoginCommand.register()
+        MudarSenhaCommand.register()
     }
 }
