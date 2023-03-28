@@ -37,5 +37,6 @@ object Components {
         val InviteCommand = Styles.Bracketed("Invite".toComponent().setStyle(Styles.fromRgb(Colors.COMMAND_GREEN)))
         val Registrar = Styles.Bracketed("Registrar".toComponent().setStyle(Styles.fromRgb(Colors.AUTH)))
         val Login = Styles.Bracketed("Login".toComponent().setStyle(Styles.fromRgb(Colors.AUTH)))
+        val MudarSenha = Styles.Bracketed("Mudar Senha".toComponent().setStyle(Styles.fromRgb(Colors.AUTH)))
     }
 }
