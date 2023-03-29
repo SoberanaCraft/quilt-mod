@@ -22,7 +22,7 @@ fun String.rgb(color: String) = "<c:#$color>$this</c>"
 fun String.underline() = "<underline>$this</underline>"
 fun String.bold() = "<b>$this</b>"
 fun String.italic() = "<i>$this</i>"
-fun String.url(uri: String) = "<url:$uri>$this</url>"
+fun String.url(uri: String) = "<url:'$uri'>$this</url>"
 
 
 operator fun MutableText.plus(other: MutableText) : MutableText = this.copy().append(other)
