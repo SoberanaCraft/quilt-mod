@@ -20,8 +20,9 @@ object MudarSenhaCommand {
                         var response = SoberanaApi.Auth.auth(owner = caller.uuid, password = old1)
                         when (response) {
                             is Failure -> {
-                                caller.sendSystemMessage(Components.Heading.Registrar + " Um erro ocorreu ao mudar a sua senha.")
-                                caller.sendSystemMessage(Components.Heading.Registrar + " Código de erro: ${response.message.intoString()}")
+                                response.Failed(Components.Heading.MudarSenha, "obtenção do seu login", caller) { player, msg ->
+                                    player.sendSystemMessage(msg)
+                                }
                                 return@runsAsync
                             }
                             is Success<*> -> {
@@ -38,22 +39,23 @@ object MudarSenhaCommand {
 
                         when (response) {
                             is Failure -> {
-                                caller.sendSystemMessage(Components.Heading.Registrar + " Um erro ocorreu ao mudar a sua senha.")
-                                caller.sendSystemMessage(Components.Heading.Registrar + " Código de erro: ${response.message.intoString()}")
+                                response.Failed(Components.Heading.MudarSenha, "mudar a sua senha", caller) { player, msg ->
+                                    player.sendSystemMessage(msg)
+                                }
                                 return@runsAsync
                             }
                             is Success<*> -> {
                                 val result = (response.value as Boolean)
                                 if (!result) {
-                                    caller.sendSystemMessage(Components.Heading.Registrar + " " + "!!! Favor reportar aos desenvolvedores. !!!".toErrComponent())
-                                    caller.sendSystemMessage(Components.Heading.Registrar + " " + "Código de erro: `UNREACHABLE_PATH [M_S_C_.kt:55]`".toErrComponent())
-                                    caller.sendSystemMessage(Components.Heading.Registrar + " " + "uid:${caller.uuid} | sid:${SoberanaMod.ServerUUID}".toErrComponent())
+                                    caller.sendSystemMessage(Components.Heading.MudarSenha + " " + "!!! Favor reportar aos desenvolvedores. !!!".toErrComponent())
+                                    caller.sendSystemMessage(Components.Heading.MudarSenha + " " + "Código de erro: `UNREACHABLE_PATH [M_S_C_.kt:55]`".toErrComponent())
+                                    caller.sendSystemMessage(Components.Heading.MudarSenha + " " + "uid:${caller.uuid} | sid:${SoberanaMod.ServerUUID}".toErrComponent())
                                     return@runsAsync
                                 }
                             }
                         }
 
-                        caller.sendSystemMessage(Components.Heading.Registrar + " Senha alterada com sucesso!")
+                        caller.sendSystemMessage(Components.Heading.MudarSenha + " Senha alterada com sucesso!")
                     }
                 }
             }

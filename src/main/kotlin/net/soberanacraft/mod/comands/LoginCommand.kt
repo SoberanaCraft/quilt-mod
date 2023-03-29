@@ -1,11 +1,8 @@
 package net.soberanacraft.mod.comands
 
 import net.silkmc.silk.commands.command
-import net.soberanacraft.mod.Components
-import net.soberanacraft.mod.SoberanaMod
+import net.soberanacraft.mod.*
 import net.soberanacraft.mod.api.*
-import net.soberanacraft.mod.isAuthenticated
-import net.soberanacraft.mod.plus
 
 object LoginCommand {
     fun register() {
@@ -21,8 +18,9 @@ object LoginCommand {
 
                     when (response) {
                         is Failure -> {
-                            caller.sendSystemMessage(Components.Heading.Login + " Um erro ocorreu ao logar na sua conta.")
-                            caller.sendSystemMessage(Components.Heading.Login + " Código de erro: ${response.message.intoString()}")
+                            response.Failed(Components.Heading.Login, "verificar seu login", caller) { player, msg ->
+                                player.sendSystemMessage(msg)
+                            }
                             return@runsAsync
                         }
                         is Success<*> -> {
@@ -38,8 +36,9 @@ object LoginCommand {
 
                     when (response) {
                         is Failure -> {
-                            caller.sendSystemMessage(Components.Heading.Login + " Um erro ocorreu ao logar na sua conta.")
-                            caller.sendSystemMessage(Components.Heading.Login + " Código de erro: ${response.message.intoString()}")
+                            response.Failed(Components.Heading.Login, "logar na sua conta", caller) { player, msg ->
+                                player.sendSystemMessage(msg)
+                            }
                             return@runsAsync
                         }
                         is Success<*> -> {
