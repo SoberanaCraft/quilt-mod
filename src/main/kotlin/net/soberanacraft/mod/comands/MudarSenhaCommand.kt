@@ -8,17 +8,11 @@ object MudarSenhaCommand {
     fun register() {
         command("mudarSenha") {
             requires { it.permission("soberana.account.changepassword") }
-
+            requires { it.player.isAuthenticated()}
             argument<String>("antiga") { old ->
                 argument<String>("nova") { new ->
                     runsAsync {
                         val caller = source.player
-
-                        if (!SoberanaMod.AUTHENTICATED_PLAYERS.contains(caller.uuid)) {
-                            caller.sendSystemMessage(Components.Heading.MudarSenha + " Você não foi registrado.")
-                            caller.sendSystemMessage(Components.Heading.MudarSenha + " Registre sua conta com [/registrar <senha> <repetirSenha>].")
-                            return@runsAsync
-                        }
 
                         val old1 = old()
                         val new1  = new()

@@ -6,11 +6,13 @@ import net.soberanacraft.mod.Components
 import net.soberanacraft.mod.api.*
 import net.soberanacraft.mod.api.models.Trust
 import net.soberanacraft.mod.events.get
+import net.soberanacraft.mod.isAuthenticated
 import net.soberanacraft.mod.plus
 
 object InviteCommand {
     fun register() {
         command("invite") {
+            requires { it.player.isAuthenticated()}
             requires { it.permission("soberana.trusted.invite") }
 
             argument<GameProfileArgument>("player") { arg ->

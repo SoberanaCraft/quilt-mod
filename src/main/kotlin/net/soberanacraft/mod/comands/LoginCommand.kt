@@ -4,21 +4,18 @@ import net.silkmc.silk.commands.command
 import net.soberanacraft.mod.Components
 import net.soberanacraft.mod.SoberanaMod
 import net.soberanacraft.mod.api.*
+import net.soberanacraft.mod.isAuthenticated
 import net.soberanacraft.mod.plus
 
 object LoginCommand {
     fun register() {
         command("login") {
+            requires { it.player.isAuthenticated().not() }
             requires { it.permission("soberana.account.login") }
 
             argument<String>("senha") { arg ->
                 runsAsync {
                     val caller = source.player
-
-                    if (SoberanaMod.AUTHENTICATED_PLAYERS.contains(caller.uuid)) {
-                        caller.sendSystemMessage(Components.Heading.Login + " Você já está logado.")
-                        return@runsAsync
-                    }
 
                     var response = SoberanaApi.Auth.isRegistered(caller.uuid)
 

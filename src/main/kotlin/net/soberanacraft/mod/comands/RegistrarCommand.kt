@@ -4,11 +4,13 @@ import net.silkmc.silk.commands.command
 import net.soberanacraft.mod.Components
 import net.soberanacraft.mod.SoberanaMod
 import net.soberanacraft.mod.api.*
+import net.soberanacraft.mod.isAuthenticated
 import net.soberanacraft.mod.plus
 
 object RegistrarCommand {
     fun register() {
         command("registrar") {
+            requires { it.player.isAuthenticated().not() }
             requires { it.permission("soberana.account.register") }
 
             argument<String>("senha") { res ->
