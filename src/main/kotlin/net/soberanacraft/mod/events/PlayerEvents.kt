@@ -18,14 +18,11 @@ import net.silkmc.silk.core.event.Player
 import net.silkmc.silk.core.logging.logger
 import net.silkmc.silk.core.task.mcSyncLaunch
 import net.silkmc.silk.core.task.silkCoroutineScope
-import net.soberanacraft.mod.Components
-import net.soberanacraft.mod.SoberanaMod
+import net.soberanacraft.mod.*
 import net.soberanacraft.mod.api.Failure
 import net.soberanacraft.mod.api.SoberanaApi
 import net.soberanacraft.mod.api.Success
 import net.soberanacraft.mod.api.models.*
-import net.soberanacraft.mod.plus
-import net.soberanacraft.mod.toComponent
 import java.util.*
 
 object PlayerEvents {
@@ -103,8 +100,7 @@ fun Player.applyEffects(entity: ServerPlayerEntity) {
             entity.sendSystemMessage(Components.Heading.ReadOnly + " O seu nick: ${this.nickname} poderá ser registrado por outros jogadores.")
             entity.sendSystemMessage(Components.Heading.ReadOnly + " Para sair desse modo:")
             entity.sendSystemMessage(Components.Heading.ReadOnly + " A) Seja convidado por um amigo")
-            entity.sendSystemMessage(Components.Heading.ReadOnly + " B) Linque sua conta do discord com " + "/link".toComponent().setStyle(
-                Components.Styles.fromRgb(Components.Colors.COMMAND_GREEN)))
+            entity.sendSystemMessage(Components.Heading.ReadOnly + " B) Linque sua conta do discord com " + "/link".rgb(Components.Colors.COMMAND_GREEN).stf())
         }
         Trust.Linked, Trust.Reffered, Trust.Trusted   -> {
             if (entity.interactionManager.gameMode == GameMode.ADVENTURE) {

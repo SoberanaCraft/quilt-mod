@@ -2,45 +2,53 @@
 
 package net.soberanacraft.mod
 
+import eu.pb4.placeholders.api.TextParserUtils
 import kotlinx.serialization.json.Json
 import net.minecraft.text.*
-import net.minecraft.util.Formatting
 
 val Jsoberana = Json {prettyPrint = true }
 
 fun String.toComponent() : MutableText = Text.literal(this)
 fun String.toLinkComponent(uri: String) = Components.Styles.Link(uri, this)
-fun String.toInfoComponent() = Components.Styles.Info(this.toComponent().setStyle(Components.Styles.GRAY))
+fun String.toInfoComponent() = Components.Styles.Info(this.toComponent())
 fun String.toErrComponent() = Components.Styles.Error(this.toComponent())
+
+/// Supremo Tribunal Federal
+fun String.stf() = TextParserUtils.formatText(this).copy()
+fun String.rgb(color: String) = "<c:#$color>$this</c>"
+fun String.underline() = "<underline>$this</underline>"
+fun String.bold() = "<b>$this</b>"
+fun String.italic() = "<i>$this</i>"
+fun String.url(uri: String) = "<url:$uri>$this</url>"
+
 
 operator fun MutableText.plus(other: MutableText) : MutableText = this.copy().append(other)
 operator fun MutableText.plus(other: String) : MutableText = this.copy().append(other.toComponent())
 
 object Components {
     object Colors {
-        val READ_ONLY_RED = 0xF2706F
-        val COMMAND_GREEN = 0x4BF27B
-        val LINK = 0x5865F2
-        val INFO = 0xA72DDB
-        val AUTH = 0xD9902E
-        var ERR = 0xFF0000
+        val READ_ONLY_RED = "F2706F"
+        val COMMAND_GREEN = "4BF27B"
+        val LINK = "5865F2"
+        val INFO = "A72DDB"
+        val AUTH = "D9902E"
+        var ERR = "FF0000"
     }
+
     object Styles {
-        val GRAY = Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.GRAY))
-        fun fromRgb(rgb: Int) = Style.EMPTY.withColor(rgb)
-        fun Bracketed (component: MutableText) = "[".toComponent().setStyle(Styles.GRAY) + component + "]".toComponent().setStyle(Styles.GRAY)
-        fun Link(uri: String, description: String) = description.toComponent().setStyle(Styles.fromRgb(Colors.LINK).withUnderline(true).withClickEvent(
-            ClickEvent(ClickEvent.Action.OPEN_URL,uri)))
-        fun Info (component: MutableText) = "Info: ".toComponent().setStyle(Styles.fromRgb(Colors.INFO).withItalic(true)) + component
-        fun Error(component: MutableText) = "Erro: ".toComponent().setStyle(Styles.fromRgb(Colors.ERR).withBold(true).withUnderline(true)) +
-            component.setStyle(Styles.fromRgb(Colors.ERR).withItalic(true).withUnderline(false).withBold(false))
+        fun Bracketed(component: MutableText) = "<gray>[</gray>".stf() + component + "<gray>]</gray>".stf()
+        fun Link(uri: String, description: String) = description.url(uri).underline().rgb(Colors.LINK).stf()
+        fun Info(component: MutableText) = "Info: ".rgb(Colors.INFO).italic().stf() + component
+        fun Error(component: MutableText) = "Erro: ".rgb(Colors.ERR).bold().underline() + component
+
     }
     object Heading {
-        val ReadOnly =  Styles.Bracketed("Somente Leitura".toComponent().setStyle(Styles.fromRgb(Colors.READ_ONLY_RED)))
-        val LinkCommand = Styles.Bracketed("Link".toComponent().setStyle(Styles.fromRgb(Colors.COMMAND_GREEN)))
-        val InviteCommand = Styles.Bracketed("Invite".toComponent().setStyle(Styles.fromRgb(Colors.COMMAND_GREEN)))
-        val Registrar = Styles.Bracketed("Registrar".toComponent().setStyle(Styles.fromRgb(Colors.AUTH)))
-        val Login = Styles.Bracketed("Login".toComponent().setStyle(Styles.fromRgb(Colors.AUTH)))
-        val MudarSenha = Styles.Bracketed("Mudar Senha".toComponent().setStyle(Styles.fromRgb(Colors.AUTH)))
+        val ReadOnly = Styles.Bracketed("Somente Leitura".rgb(Colors.READ_ONLY_RED).stf())
+        val LinkCommand = Styles.Bracketed("Link".rgb(Colors.LINK).stf())
+        val InviteCommand = Styles.Bracketed("Invite".rgb(Colors.COMMAND_GREEN).stf())
+        val Registrar = Styles.Bracketed("Registrar".rgb(Colors.AUTH).stf())
+        val Login = Styles.Bracketed("Login".rgb(Colors.AUTH).stf())
+        val MudarSenha = Styles.Bracketed("Mudar Senha".rgb(Colors.AUTH).stf())
+
     }
 }
