@@ -7,8 +7,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.*
 import me.lucko.fabric.api.permissions.v0.Permissions
 import net.minecraft.server.command.ServerCommandSource
 import net.soberanacraft.mod.api.models.*
@@ -32,19 +31,24 @@ suspend inline fun <reified T> fallible(request: () -> HttpResponse) : Fallible 
 }
 
 inline fun <reified T> serializeFallible(input: String) : Fallible {
-    val json = Json.parseToJsonElement(input).jsonObject
+    when (val json = Json.parseToJsonElement(input)) {
+        is JsonObject -> {
+            if (json.containsKey("error")) {
+                val errorMessage = Json.decodeFromString<ErrorMessage>(input)
+                return Failure(errorMessage)
+            }
 
-    if (json.containsKey("error")) {
-        val errorMessage = Json.decodeFromString<ErrorMessage>(input)
-        return Failure(errorMessage)
+            if (json.containsKey("param")) {
+                val invalidUUIDMessage = Json.decodeFromString<InvalidUUIDMessage>(input)
+                return Failure(invalidUUIDMessage)
+            }
+
+            return Success<T>(Json.decodeFromString(input))
+        }
+        else -> {
+            return Success<T>(Json.decodeFromString(input))
+        }
     }
-
-    if (json.containsKey("param")) {
-        val invalidUUIDMessage = Json.decodeFromString<InvalidUUIDMessage>(input)
-        return Failure(invalidUUIDMessage)
-    }
-
-    return Success<T>(Json.decodeFromString(input))
 }
 
 suspend inline fun _delete(path: String) : HttpResponse {
