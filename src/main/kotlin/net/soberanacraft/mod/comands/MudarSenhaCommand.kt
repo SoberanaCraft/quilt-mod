@@ -20,8 +20,9 @@ object MudarSenhaCommand {
                         var response = SoberanaApi.Auth.auth(owner = caller.uuid, password = old1)
                         when (response) {
                             is Failure -> {
-                                caller.sendSystemMessage(Components.Heading.Registrar + " Um erro ocorreu ao mudar a sua senha.")
-                                caller.sendSystemMessage(Components.Heading.Registrar + " Código de erro: ${response.message.intoString()}")
+                                response.Failed(Components.Heading.MudarSenha, "obtenção do seu login", caller) { player, msg ->
+                                    player.sendSystemMessage(msg)
+                                }
                                 return@runsAsync
                             }
                             is Success<*> -> {
@@ -38,8 +39,9 @@ object MudarSenhaCommand {
 
                         when (response) {
                             is Failure -> {
-                                caller.sendSystemMessage(Components.Heading.Registrar + " Um erro ocorreu ao mudar a sua senha.")
-                                caller.sendSystemMessage(Components.Heading.Registrar + " Código de erro: ${response.message.intoString()}")
+                                response.Failed(Components.Heading.MudarSenha, "mudar a sua senha", caller) { player, msg ->
+                                    player.sendSystemMessage(msg)
+                                }
                                 return@runsAsync
                             }
                             is Success<*> -> {
@@ -53,7 +55,7 @@ object MudarSenhaCommand {
                             }
                         }
 
-                        caller.sendSystemMessage(Components.Heading.Registrar + " Senha alterada com sucesso!")
+                        caller.sendSystemMessage(Components.Heading.MudarSenha + " Senha alterada com sucesso!")
                     }
                 }
             }

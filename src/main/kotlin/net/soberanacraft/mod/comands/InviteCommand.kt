@@ -3,6 +3,7 @@ package net.soberanacraft.mod.comands
 import net.minecraft.command.argument.GameProfileArgumentType.GameProfileArgument
 import net.silkmc.silk.commands.command
 import net.soberanacraft.mod.Components
+import net.soberanacraft.mod.Failed
 import net.soberanacraft.mod.api.*
 import net.soberanacraft.mod.api.models.Trust
 import net.soberanacraft.mod.events.get
@@ -44,8 +45,9 @@ object InviteCommand {
                                    val refereeResponse = SoberanaApi.Auth.addReferee(target.id, player.uuid)
                                    when (refereeResponse) {
                                        is Failure -> {
-                                           player.sendSystemMessage(Components.Heading.InviteCommand + " Um erro aconteceu durante a execução do comando. Tente novamente.")
-                                           player.sendSystemMessage(Components.Heading.InviteCommand + " Código do erro: ${refereeResponse.message.intoString()}")
+                                           refereeResponse.Failed(Components.Heading.InviteCommand, "criar o convite", player) { p, msg ->
+                                               p.sendSystemMessage(msg)
+                                           }
                                        }
                                        else -> {
                                            player.sendSystemMessage(Components.Heading.InviteCommand + " Jogador ${target.name} convidado com sucesso.")

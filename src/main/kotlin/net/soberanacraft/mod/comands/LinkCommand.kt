@@ -39,8 +39,9 @@ object LinkCommand {
                         val response = SoberanaApi.Auth.createNonce(caller.uuid, nonce)
                         when (response) {
                             is Failure -> {
-                                caller.sendSystemMessage(Components.Heading.LinkCommand + " Um erro aconteceu enquanto o seu código foi gerado. Tente novamente.")
-                                caller.sendSystemMessage(Components.Heading.LinkCommand + " Código de erro: ${response.message}")
+                                response.Failed(Components.Heading.LinkCommand, "geração de código", caller) { player, msg ->
+                                    player.sendSystemMessage(msg)
+                                }
                             }
                             is Success<*> -> {
                                 val auth = SoberanaApi.auth(nonce)
@@ -55,8 +56,9 @@ object LinkCommand {
 
                                 when (linkStatus) {
                                     is Failure  -> {
-                                        caller.sendSystemMessage(Components.Heading.LinkCommand + " Um erro aconteceu durante o link com o discord. Tente novamente.")
-                                        caller.sendSystemMessage(Components.Heading.LinkCommand + " Código de erro: ${linkStatus.message}")
+                                        linkStatus.Failed(Components.Heading.LinkCommand, "link com o discord", caller) { player, msg ->
+                                            player.sendSystemMessage(msg)
+                                        }
                                     }
                                     is Success<*> -> {
                                         val status = linkStatus.value as LinkMessage

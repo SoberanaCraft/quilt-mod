@@ -1,11 +1,8 @@
 package net.soberanacraft.mod.comands
 
 import net.silkmc.silk.commands.command
-import net.soberanacraft.mod.Components
-import net.soberanacraft.mod.SoberanaMod
+import net.soberanacraft.mod.*
 import net.soberanacraft.mod.api.*
-import net.soberanacraft.mod.isAuthenticated
-import net.soberanacraft.mod.plus
 
 object RegistrarCommand {
     fun register() {
@@ -33,8 +30,9 @@ object RegistrarCommand {
 
                         when (response) {
                             is Failure -> {
-                                caller.sendSystemMessage(Components.Heading.Registrar + " Um erro ocorreu ao registrar a sua conta.")
-                                caller.sendSystemMessage(Components.Heading.Registrar + " Código de erro: ${response.message.intoString()}")
+                                response.Failed(Components.Heading.MudarSenha, "obtenção dos dados", caller) { player, msg ->
+                                    player.sendSystemMessage(msg)
+                                }
                                 return@runsAsync
                             }
                             is Success<*> -> {
@@ -51,8 +49,9 @@ object RegistrarCommand {
 
                         when (response) {
                             is Failure -> {
-                                caller.sendSystemMessage(Components.Heading.Registrar + " Um erro ocorreu ao registrar a sua conta.")
-                                caller.sendSystemMessage(Components.Heading.Registrar + " Código de erro: ${response.message.intoString()}")
+                                response.Failed(Components.Heading.MudarSenha, "registrar a sua conta", caller) { player, msg ->
+                                    player.sendSystemMessage(msg)
+                                }
                                 return@runsAsync
                             }
                             is Success<*> -> {
