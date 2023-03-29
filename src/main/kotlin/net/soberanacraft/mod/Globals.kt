@@ -6,6 +6,8 @@ import eu.pb4.placeholders.api.TextParserUtils
 import kotlinx.serialization.json.Json
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.*
+import net.soberanacraft.mod.api.Failure
+import net.soberanacraft.mod.api.intoString
 
 val Jsoberana = Json {prettyPrint = true }
 
@@ -25,6 +27,11 @@ fun String.url(uri: String) = "<url:$uri>$this</url>"
 
 operator fun MutableText.plus(other: MutableText) : MutableText = this.copy().append(other)
 operator fun MutableText.plus(other: String) : MutableText = this.copy().append(other.toComponent())
+
+fun Failure.Failed(heading: MutableText, where: String, to: ServerPlayerEntity, action: (ServerPlayerEntity, MutableText) -> Unit)  {
+    action(to, heading + " Um erro aconteceu durante: \"$where\"")
+    action(to, heading + " Código de erro: ${this.message.intoString()}")
+}
 
 object Components {
     object Colors {
