@@ -29,8 +29,8 @@ operator fun MutableText.plus(other: MutableText) : MutableText = this.copy().ap
 operator fun MutableText.plus(other: String) : MutableText = this.copy().append(other.toComponent())
 
 fun Failure.Failed(heading: MutableText, where: String, to: ServerPlayerEntity, action: (ServerPlayerEntity, MutableText) -> Unit)  {
-    action(to, heading + " Um erro aconteceu durante: \"$where\"")
-    action(to, heading + " Código de erro: ${this.message.intoString()}")
+    action(to, heading + " Um erro aconteceu durante: \"${where.rgb(Components.Colors.INFO)}\"".stf())
+    action(to, heading + " Código de erro: ${this.message.intoString().rgb(Components.Colors.INFO)}".stf())
 }
 
 object Components {
