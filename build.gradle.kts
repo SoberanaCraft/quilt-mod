@@ -23,6 +23,7 @@ repositories {
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
 	maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots/") }
+	maven { url = uri("https://maven.nucleoid.xyz/") }
 }
 
 val share by configurations.creating
@@ -60,6 +61,7 @@ dependencies {
 	modImplementation("net.silkmc:silk-core:1.9.6")
 	modImplementation("net.silkmc:silk-commands:1.9.6")
 	share(modImplementation("me.lucko:fabric-permissions-api:0.2-SNAPSHOT")!!)
+	share(modImplementation("eu.pb4:placeholder-api:2.0.0-rc.1+1.19.3")!!)
 
 
 	share(implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")!!)
