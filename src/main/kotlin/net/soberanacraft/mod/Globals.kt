@@ -4,6 +4,7 @@ package net.soberanacraft.mod
 
 import eu.pb4.placeholders.api.TextParserUtils
 import kotlinx.serialization.json.Json
+import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.*
 
 val Jsoberana = Json {prettyPrint = true }
@@ -33,6 +34,7 @@ object Components {
         val INFO = "A72DDB"
         val AUTH = "D9902E"
         var ERR = "FF0000"
+        val ADMIN = "7D21Bf"
     }
 
     object Styles {
@@ -49,6 +51,9 @@ object Components {
         val Registrar = Styles.Bracketed("Registrar".rgb(Colors.AUTH).stf())
         val Login = Styles.Bracketed("Login".rgb(Colors.AUTH).stf())
         val MudarSenha = Styles.Bracketed("Mudar Senha".rgb(Colors.AUTH).stf())
+        val Admin = ("\\<".rgb(Colors.ERR) + "Admin".rgb(Colors.ADMIN).bold() + "\\>".rgb(Colors.ERR)).stf()
 
     }
 }
+
+fun ServerPlayerEntity.isAuthenticated()  = SoberanaMod.AUTHENTICATED_PLAYERS.contains(this.uuid)
