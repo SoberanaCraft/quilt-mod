@@ -47,9 +47,9 @@ object MudarSenhaCommand {
                             is Success<*> -> {
                                 val result = (response.value as Boolean)
                                 if (!result) {
-                                    caller.sendSystemMessage(Components.Heading.Registrar + " " + "!!! Favor reportar aos desenvolvedores. !!!".toErrComponent())
-                                    caller.sendSystemMessage(Components.Heading.Registrar + " " + "Código de erro: `UNREACHABLE_PATH [M_S_C_.kt:55]`".toErrComponent())
-                                    caller.sendSystemMessage(Components.Heading.Registrar + " " + "uid:${caller.uuid} | sid:${SoberanaMod.ServerUUID}".toErrComponent())
+                                    caller.sendSystemMessage(Components.Heading.MudarSenha + " " + "!!! Favor reportar aos desenvolvedores. !!!".toErrComponent())
+                                    caller.sendSystemMessage(Components.Heading.MudarSenha + " " + "Código de erro: `UNREACHABLE_PATH [M_S_C_.kt:55]`".toErrComponent())
+                                    caller.sendSystemMessage(Components.Heading.MudarSenha + " " + "uid:${caller.uuid} | sid:${SoberanaMod.ServerUUID}".toErrComponent())
                                     return@runsAsync
                                 }
                             }
