@@ -4,6 +4,7 @@ package net.soberanacraft.mod
 
 import eu.pb4.placeholders.api.TextParserUtils
 import kotlinx.serialization.json.Json
+import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.*
 import net.soberanacraft.mod.api.Failure
@@ -64,3 +65,4 @@ object Components {
 }
 
 fun ServerPlayerEntity.isAuthenticated()  = SoberanaMod.AUTHENTICATED_PLAYERS.contains(this.uuid)
+fun ServerCommandSource.updateCommandTree() =  this.server.playerManager.sendCommandTree(this.player)
