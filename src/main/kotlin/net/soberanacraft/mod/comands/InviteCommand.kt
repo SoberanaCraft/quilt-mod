@@ -50,7 +50,10 @@ object InviteCommand {
                                            }
                                        }
                                        else -> {
+                                           val targetPlayerEntity = source.server.playerManager.getPlayer(target.id)
                                            player.sendSystemMessage(Components.Heading.InviteCommand + " Jogador ${target.name} convidado com sucesso.")
+                                           targetPlayerEntity?.sendSystemMessage(Components.Heading.InviteCommand + " Você foi convidade por ${player.name}!")
+                                           targetPlayerEntity?.sendSystemMessage(Components.Heading.InviteCommand + " Registre sua conta com [/registrar <senha> <repetirSenha>]")
                                        }
                                    }
                                }
