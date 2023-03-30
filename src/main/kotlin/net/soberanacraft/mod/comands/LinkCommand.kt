@@ -78,6 +78,7 @@ object LinkCommand {
                                                 playerInfo = caller.get()
                                                 resetCacheOf(caller.uuid, playerInfo)
                                                 playerInfo.applyEffects(caller)
+                                                source.updateCommandTree()
                                                 caller.sendSystemMessage(Components.Heading.LinkCommand + " O seu status atual é ${playerInfo.trustFactor.name}.")
                                             }
                                             LinkStatus.AlreadyLinked -> {

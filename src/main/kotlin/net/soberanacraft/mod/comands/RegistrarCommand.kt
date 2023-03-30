@@ -57,6 +57,7 @@ object RegistrarCommand {
                             is Success<*> -> {
                                 val it = (response.value as Boolean)
                                 if (it) {
+                                    source.updateCommandTree()
                                     caller.sendSystemMessage(Components.Heading.Registrar + " Conta registrada com sucesso!")
                                     caller.sendSystemMessage(Components.Heading.Registrar + " Use [/login $pwd] para entrar no servidor.")
                                     caller.sendSystemMessage(Components.Heading.Registrar + " Use [/mudarSenha $pwd <nova senha>] para mudar a senha.")

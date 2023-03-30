@@ -51,6 +51,7 @@ object LoginCommand {
                     }
 
                     SoberanaMod.AUTHENTICATED_PLAYERS += caller.uuid
+                    source.updateCommandTree()
                     caller.sendSystemMessage(Components.Heading.Login + " Logado com sucesso.")
 
                 }
