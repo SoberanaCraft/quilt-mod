@@ -30,7 +30,7 @@ object RegistrarCommand {
 
                         when (response) {
                             is Failure -> {
-                                response.Failed(Components.Heading.MudarSenha, "obtenção dos dados", caller) { player, msg ->
+                                response.Failed(Components.Heading.Registrar, "obtenção dos dados", caller) { player, msg ->
                                     player.sendSystemMessage(msg)
                                 }
                                 return@runsAsync
@@ -49,7 +49,7 @@ object RegistrarCommand {
 
                         when (response) {
                             is Failure -> {
-                                response.Failed(Components.Heading.MudarSenha, "registrar a sua conta", caller) { player, msg ->
+                                response.Failed(Components.Heading.Registrar, "registrar a sua conta", caller) { player, msg ->
                                     player.sendSystemMessage(msg)
                                 }
                                 return@runsAsync
