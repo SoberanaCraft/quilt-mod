@@ -1,7 +1,6 @@
 package net.soberanacraft.mod
 
 import net.luckperms.api.LuckPerms
-import net.luckperms.api.LuckPermsProvider
 import net.soberanacraft.mod.api.SoberanaApiClient
 import net.soberanacraft.mod.api.models.Connection
 import net.soberanacraft.mod.api.models.Player
@@ -50,6 +49,5 @@ object SoberanaMod : ModInitializer {
         EventRegistry.init()
         LOGGER.info("Hello Quilt world from {}!", mod.metadata()?.name())
 
-        LuckPerms = LuckPermsProvider.get()
     }
 }
