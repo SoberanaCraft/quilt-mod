@@ -2,13 +2,10 @@ package net.soberanacraft.mod.comands
 
 import net.minecraft.command.argument.GameProfileArgumentType.GameProfileArgument
 import net.silkmc.silk.commands.command
-import net.soberanacraft.mod.Components
-import net.soberanacraft.mod.Failed
+import net.soberanacraft.mod.*
 import net.soberanacraft.mod.api.*
 import net.soberanacraft.mod.api.models.Trust
 import net.soberanacraft.mod.events.get
-import net.soberanacraft.mod.isAuthenticated
-import net.soberanacraft.mod.plus
 
 object InviteCommand {
     fun register() {
@@ -52,7 +49,8 @@ object InviteCommand {
                                        else -> {
                                            val targetPlayerEntity = source.server.playerManager.getPlayer(target.id)
                                            player.sendSystemMessage(Components.Heading.InviteCommand + " Jogador ${target.name} convidado com sucesso.")
-                                           targetPlayerEntity?.sendSystemMessage(Components.Heading.InviteCommand + " Você foi convidade por ${player.name}!")
+                                           targetPlayerEntity?.sendSystemMessage(Components.Heading.InviteCommand + " Você foi convidade por " +
+                                               "${player.gameProfile.name.rgb(Components.Colors.COMMAND_GREEN)}!")
                                            targetPlayerEntity?.sendSystemMessage(Components.Heading.InviteCommand + " Registre sua conta com [/registrar <senha> <repetirSenha>]")
                                        }
                                    }
