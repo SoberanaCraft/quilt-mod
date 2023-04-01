@@ -95,7 +95,7 @@ suspend fun ServerPlayerEntity.login() {
     player.applyRoles()
 }
 
-private suspend fun Player.applyRoles() {
+suspend fun Player.applyRoles() {
     when (trustFactor) {
         Trust.Unlinked ->  {
             if (!uuid.hasRole(Role.Name.READ_ONLY))
