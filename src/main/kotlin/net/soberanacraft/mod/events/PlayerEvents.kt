@@ -19,6 +19,9 @@ import net.silkmc.silk.core.logging.logger
 import net.silkmc.silk.core.task.mcSyncLaunch
 import net.silkmc.silk.core.task.silkCoroutineScope
 import net.soberanacraft.mod.*
+import net.soberanacraft.mod.Role.Async.addRole
+import net.soberanacraft.mod.Role.Async.hasRole
+import net.soberanacraft.mod.Role.Async.removeRole
 import net.soberanacraft.mod.api.Failure
 import net.soberanacraft.mod.api.SoberanaApi
 import net.soberanacraft.mod.api.Success
@@ -89,6 +92,38 @@ suspend fun ServerPlayerEntity.login() {
     val player = get()
     player.connect()
     player.applyEffects(this)
+    player.applyRoles()
+}
+
+suspend fun Player.applyRoles() {
+    when (trustFactor) {
+        Trust.Unlinked ->  {
+            if (!uuid.hasRole(Role.Name.READ_ONLY))
+                uuid.addRole(Role.READ_ONLY)
+        }
+        Trust.Linked ->  {
+            if (uuid.hasRole(Role.Name.READ_ONLY))
+                uuid.removeRole(Role.READ_ONLY)
+
+            if (!uuid.hasRole(Role.Name.MEMBER))
+                uuid.addRole(Role.MEMBER)
+        }
+        Trust.Reffered -> {
+            if (uuid.hasRole(Role.Name.READ_ONLY))
+                uuid.removeRole(Role.READ_ONLY)
+
+            if (!uuid.hasRole(Role.Name.REFERRED))
+                uuid.addRole(Role.REFERRED)
+        }
+        Trust.Trusted -> {
+            if (uuid.hasRole(Role.Name.READ_ONLY))
+                uuid.removeRole(Role.READ_ONLY)
+
+            if (!uuid.hasRole(Role.Name.TRUSTED))
+                uuid.addRole(Role.TRUSTED)
+        }
+    }
+
 }
 
 fun Player.applyEffects(entity: ServerPlayerEntity) {

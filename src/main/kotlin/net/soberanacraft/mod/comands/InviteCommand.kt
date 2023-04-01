@@ -4,7 +4,10 @@ import net.minecraft.command.argument.GameProfileArgumentType.GameProfileArgumen
 import net.silkmc.silk.commands.command
 import net.soberanacraft.mod.*
 import net.soberanacraft.mod.api.*
+import net.soberanacraft.mod.api.models.Player
 import net.soberanacraft.mod.api.models.Trust
+import net.soberanacraft.mod.events.applyEffects
+import net.soberanacraft.mod.events.applyRoles
 import net.soberanacraft.mod.events.get
 
 object InviteCommand {
@@ -47,11 +50,14 @@ object InviteCommand {
                                            }
                                        }
                                        else -> {
+                                           val targetPlayer = (response.value as Player)
                                            val targetPlayerEntity = source.server.playerManager.getPlayer(target.id)
                                            player.sendSystemMessage(Components.Heading.InviteCommand + " Jogador ${target.name} convidado com sucesso.")
                                            targetPlayerEntity?.sendSystemMessage(Components.Heading.InviteCommand + " Você foi convidade por " +
                                                "${player.gameProfile.name.rgb(Components.Colors.COMMAND_GREEN)}!")
                                            targetPlayerEntity?.sendSystemMessage(Components.Heading.InviteCommand + " Registre sua conta com [/registrar <senha> <repetirSenha>]")
+                                           targetPlayer.applyRoles()
+                                           targetPlayerEntity?.let {  targetPlayer.applyEffects(it) }
                                        }
                                    }
                                }

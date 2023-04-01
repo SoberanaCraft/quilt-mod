@@ -2,6 +2,7 @@ package net.soberanacraft.mod.events
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import net.luckperms.api.LuckPermsProvider
 import net.silkmc.silk.core.annotations.DelicateSilkApi
 import net.silkmc.silk.core.annotations.ExperimentalSilkApi
 import net.silkmc.silk.core.event.Events
@@ -43,6 +44,8 @@ object InitEvent {
         }
 
         logger().info("[${config.name}] ${SoberanaMod.ServerUUID}")
+
+        SoberanaMod.LuckPerms = LuckPermsProvider.get()
     }
 
     suspend fun createNewServer(stub: ServerStub) : Server? {

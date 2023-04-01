@@ -3,12 +3,16 @@
 package net.soberanacraft.mod
 
 import eu.pb4.placeholders.api.TextParserUtils
+import kotlinx.coroutines.future.asDeferred
 import kotlinx.serialization.json.Json
+import net.luckperms.api.node.Node
+import net.luckperms.api.node.ScopedNode
 import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.*
 import net.soberanacraft.mod.api.Failure
 import net.soberanacraft.mod.api.intoString
+import java.util.UUID
 
 val Jsoberana = Json {prettyPrint = true }
 
@@ -62,6 +66,41 @@ object Components {
         val Admin = ("\\<".rgb(Colors.ERR) + "Admin".rgb(Colors.ADMIN).bold() + "\\>".rgb(Colors.ERR)).stf()
 
     }
+}
+
+object Role {
+    object Name {
+        val READ_ONLY = "ro"
+        val MEMBER = "member"
+        val TRUSTED = "trusted"
+        val REFERRED = "convidado"
+    }
+
+    val READ_ONLY = Name.READ_ONLY.toRole()
+    val MEMBER = Name.MEMBER.toRole()
+    val TRUSTED = Name.TRUSTED.toRole()
+    val REFERRED = Name.REFERRED.toRole()
+
+    private fun String.toRole() : String = "group.$this"
+    fun String.toNode(): ScopedNode<*, *> = Node.builder(this).build()
+    object Async {
+        suspend fun UUID.hasRole(roleName: String) : Boolean {
+            val user = SoberanaMod.LuckPerms.userManager.loadUser(this).asDeferred().await()
+            return user.getInheritedGroups(user.queryOptions).any { it.name == roleName }
+        }
+        suspend fun UUID.addRole(role: String) {
+            val user = SoberanaMod.LuckPerms.userManager.loadUser(this).asDeferred().await()
+            user.data().add(role.toNode())
+            SoberanaMod.LuckPerms.userManager.saveUser(user).asDeferred().await()
+        }
+
+        suspend fun UUID.removeRole(role: String) {
+            val user = SoberanaMod.LuckPerms.userManager.loadUser(this).asDeferred().await()
+            user.data().remove(role.toNode())
+            SoberanaMod.LuckPerms.userManager.saveUser(user).asDeferred().await()
+        }
+    }
+
 }
 
 fun ServerPlayerEntity.isAuthenticated()  = SoberanaMod.AUTHENTICATED_PLAYERS.contains(this.uuid)

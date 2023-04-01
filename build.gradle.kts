@@ -63,6 +63,8 @@ dependencies {
 	share(modImplementation("me.lucko:fabric-permissions-api:0.2-SNAPSHOT")!!)
 	share(modImplementation("eu.pb4:placeholder-api:2.0.0-rc.1+1.19.3")!!)
 
+	compileOnly("net.luckperms:api:5.4")
+
 
 	share(implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")!!)
 	share(implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4")!!)
