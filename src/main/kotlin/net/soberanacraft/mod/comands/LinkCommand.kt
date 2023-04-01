@@ -14,6 +14,7 @@ import net.soberanacraft.mod.api.models.Trust
 import net.soberanacraft.mod.api.permission
 import net.soberanacraft.mod.api.ws.waitUntil
 import net.soberanacraft.mod.events.applyEffects
+import net.soberanacraft.mod.events.applyRoles
 import net.soberanacraft.mod.events.get
 
 object LinkCommand {
@@ -78,6 +79,7 @@ object LinkCommand {
                                                 playerInfo = caller.get()
                                                 resetCacheOf(caller.uuid, playerInfo)
                                                 playerInfo.applyEffects(caller)
+                                                playerInfo.applyRoles()
                                                 source.updateCommandTree()
                                                 caller.sendSystemMessage(Components.Heading.LinkCommand + " O seu status atual é ${playerInfo.trustFactor.name}.")
                                             }
