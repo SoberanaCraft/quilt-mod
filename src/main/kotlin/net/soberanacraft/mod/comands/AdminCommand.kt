@@ -58,7 +58,7 @@ fun LiteralCommandBuilder<ServerCommandSource>.reset() {
                         if(!response) {
                             caller.sendSystemMessage(Components.Heading.Admin + " O Jogador "
                                 + (target.name.rgb(Components.Colors.COMMAND_GREEN)
-                                + " (${target.id})".rgb(Components.Colors.INFO)).stf()
+                                + " (${target.id})".rgb(Components.Colors.INFO))
                                 + " não está registrado."
                             )
                             return@runsAsync
@@ -80,7 +80,7 @@ fun LiteralCommandBuilder<ServerCommandSource>.reset() {
                         if (!response) {
                             caller.sendSystemMessage(Components.Heading.Admin + " Não foi possivel remover o registro do jogador "
                                 + (target.name.rgb(Components.Colors.COMMAND_GREEN)
-                                + " (${target.id})".rgb(Components.Colors.INFO)).stf()
+                                + " (${target.id})".rgb(Components.Colors.INFO))
                                 + "."
                             )
                         }
@@ -89,7 +89,7 @@ fun LiteralCommandBuilder<ServerCommandSource>.reset() {
 
                 caller.sendSystemMessage(Components.Heading.Admin + " O Jogador "
                     + (target.name.rgb(Components.Colors.COMMAND_GREEN)
-                    + " (${target.id})".rgb(Components.Colors.INFO)).stf()
+                    + " (${target.id})".rgb(Components.Colors.INFO))
                     + " teve o seu registro removido com sucesso."
                 )
             }

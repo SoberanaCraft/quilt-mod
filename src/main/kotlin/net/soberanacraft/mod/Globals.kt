@@ -16,13 +16,13 @@ import java.util.UUID
 
 val Jsoberana = Json {prettyPrint = true }
 
-fun String.toComponent() : MutableText = Text.literal(this)
+fun String.toComponent() : MutableText = this.stf()
 fun String.toLinkComponent(uri: String) = Components.Styles.Link(uri, this)
 fun String.toInfoComponent() = Components.Styles.Info(this.toComponent())
 fun String.toErrComponent() = Components.Styles.Error(this.toComponent())
 
 /// Supremo Tribunal Federal
-fun String.stf() = TextParserUtils.formatText(this).copy()
+private fun String.stf() = TextParserUtils.formatText(this).copy()
 fun String.rgb(color: String) = "<c:#$color>$this</c>"
 fun String.underline() = "<underline>$this</underline>"
 fun String.bold() = "<b>$this</b>"
@@ -31,7 +31,7 @@ fun String.url(uri: String) = "<url:'$uri'>$this</url>"
 
 
 operator fun MutableText.plus(other: MutableText) : MutableText = this.copy().append(other)
-operator fun MutableText.plus(other: String) : MutableText = this.copy().append(other.toComponent())
+operator fun MutableText.plus(other: String) : MutableText = this.copy().append(other.stf())
 
 fun Failure.Failed(heading: MutableText, where: String, to: ServerPlayerEntity, action: (ServerPlayerEntity, MutableText) -> Unit)  {
     action(to, heading + " Um erro aconteceu durante: \"${where.rgb(Components.Colors.INFO)}\"".stf())

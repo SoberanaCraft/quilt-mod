@@ -135,7 +135,8 @@ fun Player.applyEffects(entity: ServerPlayerEntity) {
             entity.sendSystemMessage(Components.Heading.ReadOnly + " O seu nick: ${this.nickname} poderá ser registrado por outros jogadores.")
             entity.sendSystemMessage(Components.Heading.ReadOnly + " Para sair desse modo:")
             entity.sendSystemMessage(Components.Heading.ReadOnly + " A) Seja convidado por um amigo")
-            entity.sendSystemMessage(Components.Heading.ReadOnly + " B) Linque sua conta do discord com " + "/link".rgb(Components.Colors.COMMAND_GREEN).stf())
+            entity.sendSystemMessage(Components.Heading.ReadOnly + " B) Linque sua conta do discord com " + "/link".rgb(Components.Colors.COMMAND_GREEN))
+
         }
         Trust.Linked, Trust.Reffered, Trust.Trusted   -> {
             if (entity.interactionManager.gameMode == GameMode.ADVENTURE) {
