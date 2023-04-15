@@ -21,6 +21,7 @@ fun String.toComponent() : MutableText = this.stf()
 fun String.toLinkComponent(uri: String) = Components.Styles.Link(uri, this)
 fun String.toInfoComponent() = Components.Styles.Info(this.toComponent())
 fun String.toErrComponent() = Components.Styles.Error(this.toComponent())
+fun String.suggestCommand(command: String) = Components.Styles.SuggestCommand("/$command", this)
 
 /// Supremo Tribunal Federal
 private fun String.stf() = TextParserUtils.formatText(this).copy()
@@ -56,7 +57,7 @@ object Components {
         fun Link(uri: String, description: String) = description.url(uri).underline().rgb(Colors.LINK).stf()
         fun Info(component: MutableText) = "Info: ".rgb(Colors.INFO).italic().stf() + component
         fun Error(component: MutableText) = "Erro: ".rgb(Colors.ERR).bold().underline() + component
-
+        fun SuggestCommand(command: String, component: String) = "<cmd:'$command'>$component</cmd>".stf()
     }
     object Heading {
         val ReadOnly = Styles.Bracketed("Somente Leitura".rgb(Colors.READ_ONLY_RED).stf())
