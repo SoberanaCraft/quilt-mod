@@ -10,6 +10,7 @@ import net.luckperms.api.node.ScopedNode
 import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.*
+import net.minecraft.util.Formatting
 import net.soberanacraft.mod.api.Failure
 import net.soberanacraft.mod.api.intoString
 import java.util.UUID
@@ -24,6 +25,7 @@ fun String.toErrComponent() = Components.Styles.Error(this.toComponent())
 /// Supremo Tribunal Federal
 private fun String.stf() = TextParserUtils.formatText(this).copy()
 fun String.rgb(color: String) = "<c:#$color>$this</c>"
+fun String.color(color: Formatting) = "<c:#${color.colorValue!!.toString(16)}>$this</c>"
 fun String.underline() = "<underline>$this</underline>"
 fun String.bold() = "<b>$this</b>"
 fun String.italic() = "<i>$this</i>"
