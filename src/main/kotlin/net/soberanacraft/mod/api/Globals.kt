@@ -18,6 +18,18 @@ open class Fallible
 class Failure(val message: Message) : Fallible()
 class Success<T>(val value : T) : Fallible()
 
+@Suppress("UNCHECKED_CAST")
+suspend fun <A> either(funcFail: suspend (msg: Message) -> Unit, funcSuccess: suspend (success: A) -> Unit, either: Fallible) {
+    when(either) {
+        is Failure -> {
+            funcFail(either.message)
+        }
+        is Success<*> -> {
+            funcSuccess(either.value as A)
+        }
+    }
+}
+
 suspend inline fun <reified T> fallible(request: () -> HttpResponse) : Fallible {
     val req = request()
     val code = req.status
