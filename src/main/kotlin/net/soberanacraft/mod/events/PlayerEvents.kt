@@ -93,6 +93,7 @@ suspend fun ServerPlayerEntity.login() {
     player.connect()
     player.applyEffects(this)
     player.applyRoles()
+    player.sendJoinMessage(this)
 }
 
 suspend fun Player.applyRoles() {
@@ -131,12 +132,6 @@ fun Player.applyEffects(entity: ServerPlayerEntity) {
         Trust.Unlinked ->  {
             entity.changeGameMode(GameMode.ADVENTURE)
             entity.addStatusEffect(StatusEffectInstance(StatusEffects.SATURATION, Int.MAX_VALUE))
-            entity.sendSystemMessage(Components.Heading.ReadOnly + " Você está no modo somente leitura.")
-            entity.sendSystemMessage(Components.Heading.ReadOnly + " O seu nick: ${this.nickname} poderá ser registrado por outros jogadores.")
-            entity.sendSystemMessage(Components.Heading.ReadOnly + " Para sair desse modo:")
-            entity.sendSystemMessage(Components.Heading.ReadOnly + " A) Seja convidado por um amigo")
-            entity.sendSystemMessage(Components.Heading.ReadOnly + " B) Linque sua conta do discord com " + "/link".rgb(Components.Colors.COMMAND_GREEN))
-
         }
         Trust.Linked, Trust.Reffered, Trust.Trusted   -> {
             if (entity.interactionManager.gameMode == GameMode.ADVENTURE) {
@@ -145,6 +140,21 @@ fun Player.applyEffects(entity: ServerPlayerEntity) {
                     entity.removeStatusEffect(StatusEffects.SATURATION)
                 }
             }
+        }
+    }
+}
+
+suspend fun Player.sendJoinMessage(entity: ServerPlayerEntity) {
+    when(trustFactor) {
+        Trust.Unlinked -> {
+            entity.sendSystemMessage(Components.Heading.ReadOnly + " Você está no modo somente leitura.")
+            entity.sendSystemMessage(Components.Heading.ReadOnly + " O seu nick: ${this.nickname} poderá ser registrado por outros jogadores.")
+            entity.sendSystemMessage(Components.Heading.ReadOnly + " Para sair desse modo:")
+            entity.sendSystemMessage(Components.Heading.ReadOnly + " A) Seja convidado por um amigo")
+            entity.sendSystemMessage(Components.Heading.ReadOnly + " B) Linque sua conta do discord com " + "/link".rgb(Components.Colors.COMMAND_GREEN))
+        }
+        Trust.Linked, Trust.Reffered, Trust.Trusted -> {
+            TODO()
         }
     }
 }
