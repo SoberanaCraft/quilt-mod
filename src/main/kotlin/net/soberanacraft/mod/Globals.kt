@@ -9,10 +9,12 @@ import net.luckperms.api.node.Node
 import net.luckperms.api.node.ScopedNode
 import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.sound.SoundEvents
 import net.minecraft.text.*
 import net.minecraft.util.Formatting
 import net.soberanacraft.mod.api.Failure
 import net.soberanacraft.mod.api.intoString
+import net.soberanacraft.mod.api.models.Message
 import java.util.UUID
 
 val Jsoberana = Json {prettyPrint = true }
@@ -39,6 +41,12 @@ operator fun MutableText.plus(other: String) : MutableText = this.copy().append(
 fun Failure.Failed(heading: MutableText, where: String, to: ServerPlayerEntity, action: (ServerPlayerEntity, MutableText) -> Unit)  {
     action(to, heading + " Um erro aconteceu durante: \"${where.rgb(Components.Colors.INFO)}\"".stf())
     action(to, heading + " Código de erro: ${this.message.intoString().rgb(Components.Colors.INFO)}".stf())
+}
+
+fun Message.fail(heading: MutableText, where: String, to: ServerPlayerEntity) {
+    to.sendSystemMessage(heading + " Um erro aconteceu durante: \"${where.rgb(Components.Colors.INFO)}\"".stf())
+    to.sendSystemMessage(heading + " Código de erro: ${this.intoString().rgb(Components.Colors.INFO)}".stf())
+    to.playSound(SoundEvents.BLOCK_BELL_RESONATE)
 }
 
 object Components {
