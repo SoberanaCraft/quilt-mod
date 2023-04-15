@@ -22,9 +22,7 @@ import net.soberanacraft.mod.*
 import net.soberanacraft.mod.Role.Async.addRole
 import net.soberanacraft.mod.Role.Async.hasRole
 import net.soberanacraft.mod.Role.Async.removeRole
-import net.soberanacraft.mod.api.Failure
-import net.soberanacraft.mod.api.SoberanaApi
-import net.soberanacraft.mod.api.Success
+import net.soberanacraft.mod.api.*
 import net.soberanacraft.mod.api.models.*
 import java.util.*
 
@@ -162,15 +160,10 @@ suspend fun Player.sendJoinMessage(entity: ServerPlayerEntity) {
 suspend fun ServerPlayerEntity.createNew() {
     logger().info("Creating new player profile for [${this.uuid}]")
     val response = SoberanaApi.Auth.createPlayer(PlayerStub(this.uuid, this.gameProfile.name, Platform.Java))
-    when (response) {
-        is Failure -> {
-            this.sendSystemMessage("Um erro aconteceu ao registrar sua conta: ${response.message}".toComponent())
-            return
-        }
-        is Success<*> -> {
-            (response.value as Player).connect()
-        }
-    }
+    either<Player>({ it.fail(Components.Heading.Login, "criar a sua conta", this) },
+    { player ->
+        player.connect()
+    }, response)
 }
 
 suspend fun ServerPlayerEntity.get() = SoberanaApi._player(uuid)
