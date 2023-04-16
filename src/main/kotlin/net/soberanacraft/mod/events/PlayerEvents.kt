@@ -9,6 +9,7 @@ import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.item.ItemStack
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.ActionResult
+import net.minecraft.util.Formatting
 import net.minecraft.util.TypedActionResult
 import net.minecraft.world.GameMode
 import net.silkmc.silk.core.annotations.DelicateSilkApi
@@ -152,10 +153,43 @@ suspend fun Player.sendJoinMessage(entity: ServerPlayerEntity) {
             entity.sendSystemMessage(Components.Heading.ReadOnly + " B) Linque sua conta do discord com " + "/link".rgb(Components.Colors.COMMAND_GREEN))
         }
         Trust.Linked, Trust.Reffered, Trust.Trusted -> {
-            TODO()
+            val response : Fallible = SoberanaApi.Auth.isRegistered(uuid)
+            either<Boolean>(
+                { it.fail(Components.Heading.Login, "obter os dados do jogador", entity) },
+                { isRegistered ->
+                    if (isRegistered) entity.sendLoginMessage()
+                    else entity.sendRegisterMessage()
+                }, response
+            )
         }
     }
 }
+
+fun ServerPlayerEntity.sendRegisterMessage() {
+    sendSystemMessage(Components.Heading.Registrar + " Sua conta não foi registrada ainda.".color(Formatting.YELLOW))
+    sendSystemMessage(
+        Components.Heading.Registrar
+            + " Use ".color(Formatting.YELLOW)
+            + "[/registrar]"
+            .rgb(Components.Colors.COMMAND_GREEN)
+            .underline()
+            .suggestCommand("registrar senha repetirSenha")
+            + " para registrar a sua conta.".color(Formatting.YELLOW)
+    )
+}
+
+fun ServerPlayerEntity.sendLoginMessage() {
+    sendSystemMessage(
+        Components.Heading.Registrar
+            + " Use ".color(Formatting.YELLOW)
+            + "[/registrar]"
+            .rgb(Components.Colors.COMMAND_GREEN)
+            .underline()
+            .suggestCommand("login ")
+            + " para registrar a sua conta.".color(Formatting.YELLOW)
+    )
+}
+
 
 suspend fun ServerPlayerEntity.createNew() {
     logger().info("Creating new player profile for [${this.uuid}]")
